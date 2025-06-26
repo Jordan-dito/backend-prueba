@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Gestión de Usuarios</title>
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- DataTables -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+</head>
+<body class="bg-light">
+
+<div class="container mt-5">
+  <div class="card shadow border-0">
+    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+      <h5 class="mb-0"><i class="bi bi-people-fill"></i> Lista de Usuarios</h5>
+      <div>
+   <button id="btnCrear" 
+        class="btn btn-light btn-sm me-2" 
+        data-bs-toggle="modal" 
+        data-bs-target="#modalCrear">
+  <i class="bi bi-person-plus-fill"></i> Crear Usuario
+</button>
+
+        <button id="btnExportarPDF" class="btn btn-outline-light btn-sm">
+          <i class="bi bi-file-earmark-pdf-fill"></i> Exportar PDF
+        </button>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table id="tablaUsuarios" class="table table-bordered table-striped table-hover align-middle">
+          <thead class="table-light">
+            <tr>
+              <th>ID</th>
+              <th>Usuario</th>
+              <th>Email</th>
+              <th>Departamento</th>
+              <th>Cargo</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Se llena desde JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Crear Usuario -->
+<!-- Modal Crear Usuario -->
+<div class="modal fade" id="modalCrear" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <form class="modal-content" id="formCrear">
+      <div class="modal-header bg-success text-white">
+        <h5 class="modal-title">
+          <i class="bi bi-person-plus-fill"></i> Nuevo Usuario
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+
+      <div class="modal-body row g-3">
+        <!-- Usuario -->
+        <div class="col-md-6">
+          <label class="form-label">Usuario</label>
+          <input type="text" name="usuario" class="form-control" required>
+        </div>
+
+        <!-- Email -->
+        <div class="col-md-6">
+          <label class="form-label">Email</label>
+          <input type="email" name="email" class="form-control" required>
+        </div>
+
+        <!-- Contraseña -->
+        <div class="col-md-6">
+          <label class="form-label">Contraseña</label>
+          <input type="password" name="password" class="form-control" required>
+        </div>
+
+        <!-- Primer Nombre -->
+        <div class="col-md-6">
+          <label class="form-label">Primer Nombre</label>
+          <input type="text" name="primerNombre" class="form-control" required>
+        </div>
+
+        <!-- Segundo Nombre -->
+        <div class="col-md-6">
+          <label class="form-label">Segundo Nombre</label>
+          <input type="text" name="segundoNombre" class="form-control">
+        </div>
+
+        <!-- Primer Apellido -->
+        <div class="col-md-6">
+          <label class="form-label">Primer Apellido</label>
+          <input type="text" name="primerApellido" class="form-control" required>
+        </div>
+
+        <!-- Segundo Apellido -->
+        <div class="col-md-6">
+          <label class="form-label">Segundo Apellido</label>
+          <input type="text" name="segundoApellido" class="form-control">
+        </div>
+
+        <!-- Departamento -->
+        <div class="col-md-6">
+          <label class="form-label">Departamento</label>
+          <select name="idDepartamento" class="form-select" required>
+            <!-- Opciones se cargan con JS -->
+          </select>
+        </div>
+
+        <!-- Cargo -->
+        <div class="col-md-6">
+          <label class="form-label">Cargo</label>
+          <select name="idCargo" class="form-select" required>
+            <!-- Opciones se cargan con JS -->
+          </select>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-success">
+          <i class="bi bi-check-circle-fill"></i> Guardar Usuario
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+
+
+<!-- Modal Editar Usuario -->
+<div class="modal fade" id="modalEditar" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <form class="modal-content" id="formEditar">
+      <div class="modal-header bg-warning text-white">
+        <h5 class="modal-title"><i class="bi bi-pencil-square"></i> Editar Usuario</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body row g-3">
+        <input type="hidden" name="id" id="edit-id">
+
+        <div class="col-md-6">
+          <label class="form-label">Usuario</label>
+          <input type="text" name="usuario" id="edit-usuario" class="form-control" required>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Email</label>
+          <input type="email" name="email" id="edit-email" class="form-control" required>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Primer Nombre</label>
+          <input type="text" name="primerNombre" id="edit-primerNombre" class="form-control" required>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Segundo Nombre</label>
+          <input type="text" name="segundoNombre" id="edit-segundoNombre" class="form-control">
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Primer Apellido</label>
+          <input type="text" name="primerApellido" id="edit-primerApellido" class="form-control" required>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Segundo Apellido</label>
+          <input type="text" name="segundoApellido" id="edit-segundoApellido" class="form-control">
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Departamento</label>
+          <select name="idDepartamento" id="edit-idDepartamento" class="form-select" required></select>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Cargo</label>
+          <select name="idCargo" id="edit-idCargo" class="form-select" required></select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-warning">
+          <i class="bi bi-save2"></i> Actualizar Usuario
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Sección: Departamentos -->
+<div class="container mt-4">
+  <div class="card shadow-sm">
+    <div class="card-header bg-info text-white d-flex justify-content-between">
+      <h5 class="mb-0"><i class="bi bi-diagram-3-fill"></i> Departamentos</h5>
+      <button id="btnExportarDepartamentos" class="btn btn-outline-light btn-sm">
+        <i class="bi bi-file-earmark-pdf-fill"></i> Exportar PDF
+      </button>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table id="tablaDepartamentos" class="table table-bordered table-hover">
+          <thead class="table-light">
+            <tr>
+              <th>ID</th>
+              <th>Código</th>
+              <th>Nombre</th>
+              <th>Activo</th>
+              <th>Usuario Creación</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Sección: Cargos -->
+<div class="container mt-4">
+  <div class="card shadow-sm">
+    <div class="card-header bg-secondary text-white d-flex justify-content-between">
+      <h5 class="mb-0"><i class="bi bi-person-badge-fill"></i> Cargos</h5>
+      <button id="btnExportarCargos" class="btn btn-outline-light btn-sm">
+        <i class="bi bi-file-earmark-pdf-fill"></i> Exportar PDF
+      </button>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table id="tablaCargos" class="table table-bordered table-hover">
+          <thead class="table-light">
+            <tr>
+              <th>ID</th>
+              <th>Código</th>
+              <th>Nombre</th>
+              <th>Activo</th>
+              <th>Usuario Creación</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- JS -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js"></script>
+
+<!-- Script personalizado -->
+<script src="script.js"></script>
+
+</body>
+</html>
