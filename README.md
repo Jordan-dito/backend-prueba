@@ -1,66 +1,140 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Informe de Entrega – Backend Laravel
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## ✅ Información general
 
-## About Laravel
+**Proyecto:** Prueba Técnica – Administración de Usuarios  
+**Tecnología:** Laravel 10 (PHP 8.x), MySQL (XAMPP), Artisan CLI  
+**Base de datos:** `prueba`  
+**Servidor local:** http://127.0.0.1:8000
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 📁 Estructura de tablas y migraciones
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Tabla `users`
+- usuario (string)
+- email (string, único)
+- password (string, encriptado)
+- primerNombre, segundoNombre, primerApellido, segundoApellido
+- idDepartamento (relación con departamentos)
+- idCargo (relación con cargos)
 
-## Learning Laravel
+### Tabla `departamentos`
+- id, codigo, nombre, activo, idUsuarioCreacion, timestamps
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Tabla `cargos`
+- id, codigo, nombre, activo, idUsuarioCreacion, timestamps
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+---
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## 🔗 Endpoints de la API
 
-## Laravel Sponsors
+| Método | Ruta                      | Descripción              |
+|--------|---------------------------|--------------------------|
+| GET    | /api/usuarios             | Listar todos los usuarios |
+| POST   | /api/usuarios             | Crear nuevo usuario      |
+| GET    | /api/usuarios/{id}        | Ver usuario por ID       |
+| PUT    | /api/usuarios/{id}        | Actualizar usuario       |
+| DELETE | /api/usuarios/{id}        | Eliminar usuario         |
+| GET    | /api/departamentos        | Listar departamentos     |
+| GET    | /api/cargos               | Listar cargos            |
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+---
 
-### Premium Partners
+## 🛠️ Cómo correr el proyecto
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+1. Asegúrate de tener instalado:
+   - PHP 8.x
+   - Composer
+   - XAMPP con MySQL activado
 
-## Contributing
+2. Clona o copia el proyecto dentro de `C:\xampp\htdocs`
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+3. Instala dependencias:
 
-## Code of Conduct
+```bash
+composer install
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+4. Copia el archivo `.env.example` a `.env` y configúralo así:
 
-## Security Vulnerabilities
+```
+DB_DATABASE=prueba
+DB_USERNAME=root
+DB_PASSWORD=
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+5. Ejecuta las migraciones y seeders:
 
-## License
+```bash
+php artisan migrate:fresh --seed
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+6. Inicia el servidor:
+
+```bash
+php artisan serve
+```
+
+Accede desde:  
+http://localhost:8000
+
+---
+
+## 🧪 Cómo probar con Postman
+
+### GET usuarios
+
+```
+GET http://localhost:8000/api/usuarios
+```
+
+### POST usuario
+
+```
+POST http://localhost:8000/api/usuarios
+```
+
+Body → raw → JSON:
+
+```json
+{
+  "usuario": "nuevo01",
+  "email": "nuevo@email.com",
+  "password": "clave123",
+  "primerNombre": "Mario",
+  "primerApellido": "Lopez",
+  "idDepartamento": 1,
+  "idCargo": 1
+}
+```
+
+### GET un usuario
+
+```
+GET http://localhost:8000/api/usuarios/1
+```
+
+### PUT usuario
+
+```
+PUT http://localhost:8000/api/usuarios/1
+```
+
+### DELETE usuario
+
+```
+DELETE http://localhost:8000/api/usuarios/1
+```
+
+### Departamentos
+
+```
+GET http://localhost:8000/api/departamentos
+```
+
+### Cargos
+
+```
+GET http://localhost:8000/api/cargos
+```
